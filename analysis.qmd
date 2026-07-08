@@ -6,7 +6,7 @@ execute:
   echo: false
 ---
 
-This study examines attitudes towards immigration. The key covariate of interest is exposure towards Spanish-speakers, and the outcome is measured in the average causal effect of anti-immigration attitudes. A potential weakness is that the survey may not actually measure the attitudes towards immigration, just the answers to the questions in the survey.
+This study examines attitudes towards immigration. The key covariate of interest is exposure towards Spanish-speakers, and the outcome is measured in the average causal effect of anti-immigration attitudes. A potential weakness is that the survey may not actually measure the attitudes towards immigration, just the answers to the questions in the survey. We model anti-immigration attitudes as a linear function of exposure towards Spanish-speakers.
 
 
 
@@ -15,10 +15,45 @@ This study examines attitudes towards immigration. The key covariate of interest
 library(tidyverse)
 library(tidymodels)
 library(broom)
+library(gt)
 library(primer.data)
 ```
 
 ```{r}
 glimpse(trains)
 ```
+
+```{r}
+linear_reg(engine = "lm") |> fit(att_end ~ treatment + age, data = trains)
+```
+
+```{r}
+#| cache: true
+fit_att <- linear_reg(engine = "lm") |> fit(att_end ~ treatment, data = trains)
+```
+
+```{r}
+tidy(fit_att, conf.int = TRUE)
+```
+
+```{r}
+tidy(fit_att, conf.int = TRUE) %>%
+  select(term, estimate, conf.low, conf.high) %>%
+  mutate(across(where(is.numeric), ~ signif(.x, 3))) %>%
+  gt() %>%
+  tab_header(
+    title = "Causal Effect of Exposure to Spanish-Speakers on Attitude Toward Immigration",
+    subtitle = "Data source: trains dataset from primer.data"
+  ) %>%
+  cols_label(
+    term = "Parameter",
+    estimate = "Estimate",
+    conf.low = "95% CI Lower Limit",
+    conf.high = "95% CI Upper Limit"
+  )
+```
+
+
+
+
 
