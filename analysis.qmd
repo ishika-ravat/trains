@@ -6,7 +6,7 @@ execute:
   echo: false
 ---
 
-This study examines attitudes towards immigration. The key covariate of interest is exposure towards Spanish-speakers, and the outcome is measured in the average causal effect of anti-immigration attitudes.
+This study examines attitudes towards immigration. The key covariate of interest is exposure towards Spanish-speakers, and the outcome is measured in the average causal effect of anti-immigration attitudes. A potential weakness is that the survey may not actually measure the attitudes towards immigration, just the answers to the questions in the survey.
 
 
 
