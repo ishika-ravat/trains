@@ -13,6 +13,7 @@ This study examines attitudes towards immigration. The key covariate of interest
 ```{r}
 #| message: false
 library(tidyverse)
+library(tidymodels)
 library(primer.data)
 ```
 
