@@ -16,6 +16,7 @@ library(tidyverse)
 library(tidymodels)
 library(broom)
 library(gt)
+library(marginaleffects)
 library(primer.data)
 ```
 
@@ -50,6 +51,35 @@ tidy(fit_att, conf.int = TRUE) %>%
     estimate = "Estimate",
     conf.low = "95% CI Lower Limit",
     conf.high = "95% CI Upper Limit"
+  )
+```
+
+```{r}
+predictions(fit_att)
+```
+
+```{r}
+plot_predictions(fit_att, condition = "treatment", draw = FALSE) %>%
+  ggplot(aes(x = treatment, y = estimate, ymin = conf.low, ymax = conf.high, color = treatment)) +
+  geom_point(size = 4) +
+  geom_errorbar(width = 0.2, linewidth = 1) +
+  scale_color_manual(values = c("Control" = "#2c3e50", "Treated" = "#e74c3c")) +
+  labs(
+    title = "Immigration Attitude Score After Exposure to Spanish-Speakers",
+    subtitle = "Exposure to Spanish-speakers led to a more conservative attitude score on average",
+    caption = "Source: trains dataset from primer.data. Error bars show 95% confidence intervals.",
+    x = "Treatment Group",
+    y = "Predicted Ending Attitude Score (3 to 15)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, margin = margin(b = 10)),
+    plot.subtitle = element_text(face = "italic", size = 12, color = "gray30", margin = margin(b = 20)),
+    plot.caption = element_text(size = 9, color = "gray50", margin = margin(t = 15)),
+    legend.position = "none",
+    axis.title.x = element_text(margin = margin(t = 10)),
+    axis.title.y = element_text(margin = margin(r = 10)),
+    panel.grid.minor = element_blank()
   )
 ```
 
